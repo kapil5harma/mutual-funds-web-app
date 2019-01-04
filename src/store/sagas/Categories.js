@@ -32,7 +32,6 @@ export function* fetchCategoriesSaga(action) {
 }
 
 export function* fetchFundDetailsSaga(action) {
-  console.log('action: ', action);
   try {
     yield put(actions.fetchFundDetailsStart());
     const url1 = yield `https://api.piggy.co.in/v1/mf/?key=${action.key1}`;
@@ -43,9 +42,6 @@ export function* fetchFundDetailsSaga(action) {
     let fund2 = {};
     fund1 = { ...res1.data.data.mutual_fund };
     fund2 = { ...res2.data.data.mutual_fund };
-    console.log('fund1: ', fund1);
-    console.log('fund2: ', fund2);
-
     yield put(actions.fetchFundDetailsSuccess({ fund1, fund2 }));
   } catch (err) {
     yield put(actions.fetchFundDetailsFail(err));

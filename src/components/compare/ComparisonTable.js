@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ComparisonTable = props => {
-  console.log('props: ', props);
   const { fund1, fund2 } = props;
 
   return (

@@ -36,20 +36,14 @@ class Compare extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log('state: ', state);
-  return {
-    searchResults: state.searchResults
-  };
-};
+const mapStateToProps = state => ({
+  searchResults: state.searchResults
+});
 
-const mapDispatchToProps = dispatch => {
-  console.log('dispatch: ', dispatch);
-  return {
-    onFetchFundDetails: (key1, key2) =>
-      dispatch(actions.fetchFundDetails(key1, key2))
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  onFetchFundDetails: (key1, key2) =>
+    dispatch(actions.fetchFundDetails(key1, key2))
+});
 
 export default connect(
   mapStateToProps,
