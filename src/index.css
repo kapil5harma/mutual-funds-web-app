@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background: ghostwhite;
 }
 .container {
   display: flex;
@@ -55,4 +56,39 @@ body {
   color: ghostwhite;
   font-size: 1.2rem;
   line-height: 2;
+}
+
+.comparison-table {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.5rem;
+}
+
+.column-1 {
+  width: 20%;
+  padding: 0.25rem;
+}
+/* .column-2 {
+  width: 40%;
+  padding: 0.25rem;
+} */
+.column-2,
+.column-3 {
+  width: 40%;
+  padding: 0.25rem;
+  text-align: right;
+}
+
+.headers {
+  font-size: 1rem !important;
+  font-weight: 600;
+}
+.row-odd {
+  background: #cecece;
+  display: flex;
+  font-size: 0.875rem;
+}
+.row-even {
+  display: flex;
+  font-size: 0.875rem;
 }

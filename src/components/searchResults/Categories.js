@@ -6,26 +6,9 @@ import Tabs from './Tabs';
 import * as actions from '../../store/actions/actions';
 
 class Categories extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      loading: true,
-      searchResults: []
-    };
+  componentDidMount() {
+    if (!this.props.searchResults.length) this.props.onFetchCategories();
   }
-
-  componentWillMount() {
-    let route = this.props.location.pathname;
-    this.props.onFetchCategories(route);
-  }
-
-  componentWillReceiveProps = nextProps => {
-    let route = nextProps.location.pathname;
-    if (route !== this.props.location.pathname) {
-      this.props.onFetchCategories(route);
-    }
-  };
 
   render() {
     if (this.props.loading) return <Spinner />;
@@ -59,7 +42,6 @@ Categories.propTypes = {
 };
 
 const mapStateToProps = state => {
-  // console.log('state: ', state);
   return {
     searchResults: state.searchResults.searchResults,
     loading: state.searchResults.loading
@@ -67,7 +49,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onFetchCategories: route => dispatch(actions.fetchCategories(route))
+  onFetchCategories: () => dispatch(actions.fetchCategories())
 });
 
 export default connect(
