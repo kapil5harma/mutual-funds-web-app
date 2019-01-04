@@ -8,7 +8,6 @@ const config = {
 };
 
 export function* fetchCategoriesSaga(action) {
-  console.log('action: ', action);
   try {
     yield put(actions.fetchCategoriesStart());
     let searchParameter = '';
@@ -36,21 +35,18 @@ export function* fetchFundDetailsSaga(action) {
   console.log('action: ', action);
   try {
     yield put(actions.fetchFundDetailsStart());
-    const key = action.key;
-    const url = yield `https://api.piggy.co.in/v1/mf/?key=${key}`;
-    const res = yield axios.get(url, config);
-    const searchResults = [];
-    // for (let key in res.data.data.search_results) {
-    //   if (Number(key) === 99) {
-    //     break;
-    //   }
-    //   searchResults.push({
-    //     id: key,
-    //     ...res.data.data.search_results[key]
-    //   });
-    // }
-    console.log('res: ', res.data);
-    yield put(actions.fetchFundDetailsSuccess(searchResults));
+    const url1 = yield `https://api.piggy.co.in/v1/mf/?key=${action.key1}`;
+    const url2 = yield `https://api.piggy.co.in/v1/mf/?key=${action.key2}`;
+    const res1 = yield axios.get(url1, config);
+    const res2 = yield axios.get(url2, config);
+    let fund1 = {};
+    let fund2 = {};
+    fund1 = { ...res1.data.data.mutual_fund };
+    fund2 = { ...res2.data.data.mutual_fund };
+    console.log('fund1: ', fund1);
+    console.log('fund2: ', fund2);
+
+    yield put(actions.fetchFundDetailsSuccess({ fund1, fund2 }));
   } catch (err) {
     yield put(actions.fetchFundDetailsFail(err));
   }

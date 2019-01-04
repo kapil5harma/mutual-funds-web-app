@@ -1,9 +1,8 @@
 import * as actionTypes from './actionTypes';
 
-export const fetchCategories = route => {
+export const fetchCategories = () => {
   return {
-    type: actionTypes.FETCH_CATEGORIES,
-    route
+    type: actionTypes.FETCH_CATEGORIES
   };
 };
 
@@ -27,10 +26,11 @@ export const fetchCategoriesFail = error => {
   };
 };
 
-export const fetchFundDetails = key => {
+export const fetchFundDetails = (key1, key2) => {
   return {
     type: actionTypes.FETCH_FUND_DETAILS,
-    key
+    key1,
+    key2
   };
 };
 
@@ -43,7 +43,8 @@ export const fetchFundDetailsStart = () => {
 export const fetchFundDetailsSuccess = fundDetails => {
   return {
     type: actionTypes.FETCH_FUND_DETAILS_SUCCESS,
-    fundDetails: fundDetails
+    fund1: fundDetails.fund1,
+    fund2: fundDetails.fund2
   };
 };
 

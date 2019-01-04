@@ -2,7 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   searchResults: [],
-  fundDetails: null,
+  fund1: {},
+  fund2: {},
   loading: false
 };
 
@@ -32,7 +33,8 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_FUND_DETAILS_SUCCESS:
       return {
         ...state,
-        fundDetails: action.fundDetails,
+        fund1: action.fund1,
+        fund2: action.fund2,
         loading: false
       };
     case actionTypes.FETCH_FUND_DETAILS_FAIL:
