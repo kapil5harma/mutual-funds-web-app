@@ -5,13 +5,14 @@ import {
   // , Redirect
 } from 'react-router-dom';
 import Categories from '../searchResults/Categories';
+import Compare from '../compare/Compare';
 
 class MainPage extends Component {
   render() {
     return (
       <Switch>
         <Route path='/' exact component={Categories} />>
-        <Route path='/:name' exact component={Categories} />>
+        <Route path='/compare' exact component={Compare} />>
       </Switch>
     );
   }

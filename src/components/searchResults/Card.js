@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import * as actions from '../../store/actions/actions';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class Card extends Component {
   state = {
@@ -9,8 +10,7 @@ class Card extends Component {
   };
 
   compare = (fund1, fund2) => {
-    // console.log('fund1: ', fund1);
-    // console.log('fund2: ', fund2);
+    this.props.history.push({ pathname: 'compare', state: { fund1, fund2 } });
   };
   objectIsEmpty = obj => {
     if (Object.keys(obj).length === 0 && obj.constructor === Object) {
@@ -19,7 +19,6 @@ class Card extends Component {
   };
 
   handleClick = (id, key) => {
-    // console.log('this.state: ', this.state);
     const elem = document.getElementById(id);
     const { fund1, fund2 } = this.state;
     if (
@@ -43,7 +42,6 @@ class Card extends Component {
   };
 
   render() {
-    // console.log('this.props: ', this.props);
     return (
       <Fragment>
         {this.props.funds.map(fund => (
@@ -116,4 +114,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   null,
   mapDispatchToProps
-)(Card);
+)(withRouter(Card));

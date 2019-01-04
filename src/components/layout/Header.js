@@ -26,11 +26,11 @@ class Header extends Component {
 
     return (
       <div className='Header' style={headerStyle}>
-        <h1 className='heading text-center p-4 mb-0'>
+        <h2 className='heading text-center p-4 mb-0'>
           <Link to='/' style={{ textDecoration: 'none', color: '#fff' }}>
-            Piggy Challenge
+            Piggy Assignment
           </Link>
-        </h1>
+        </h2>
       </div>
     );
   }
