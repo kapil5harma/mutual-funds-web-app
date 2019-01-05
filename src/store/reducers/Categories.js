@@ -4,6 +4,8 @@ const initialState = {
   searchResults: [],
   fund1: {},
   fund2: {},
+  fund3: {},
+  fund4: {},
   loading: false
 };
 
@@ -17,7 +19,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_CATEGORIES_SUCCESS:
       return {
         ...state,
-        searchResults: action.searchResults,
+        searchResults: [...action.searchResults],
         loading: false
       };
     case actionTypes.FETCH_CATEGORIES_FAIL:
@@ -35,11 +37,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         fund1: action.fund1,
         fund2: action.fund2,
+        fund3: action.fund3,
+        fund4: action.fund4,
         loading: false
       };
     case actionTypes.FETCH_FUND_DETAILS_FAIL:
       return {
         ...state,
+        loading: false
+      };
+    case actionTypes.SEARCHED_FUND:
+      return {
+        ...state,
+        searchResults: [...action.searchResults],
         loading: false
       };
     default:

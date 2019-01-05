@@ -3,7 +3,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Card from './Card';
 
-const TabComponent = props => {
+const TabComponent = () => {
+  // console.log('props: ', props);
   return (
     <Tabs>
       <TabList>
@@ -13,13 +14,13 @@ const TabComponent = props => {
       </TabList>
 
       <TabPanel>
-        <Card funds={[...props.categories.equityFunds]} />
+        <Card tab='1' />
       </TabPanel>
       <TabPanel>
-        <Card funds={[...props.categories.debtFunds]} />
+        <Card tab='2' />
       </TabPanel>
       <TabPanel>
-        <Card funds={[...props.categories.hybridFunds]} />
+        <Card tab='3' />
       </TabPanel>
     </Tabs>
   );

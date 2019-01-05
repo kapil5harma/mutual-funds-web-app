@@ -2,53 +2,59 @@ import React, { Component, Fragment } from 'react';
 import * as actions from '../../store/actions/actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import SearchBar from './Search';
 
 class Card extends Component {
   state = {
-    fund1: {},
-    fund2: {}
+    filteredFunds: [],
+    min: -1,
+    max: -1
   };
 
-  compare = (fund1, fund2) => {
-    this.props.history.push({ pathname: 'compare', state: { fund1, fund2 } });
-  };
-  objectIsEmpty = obj => {
-    if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-      return true;
-    }
+  componentDidMount = () => {
+    const filters = {};
+    if (!this.props.funds.length) this.props.onFetchCategories(filters);
+    if (this.props.funds.length)
+      this.setState({ filteredFunds: this.props.funds });
   };
 
-  handleClick = (id, key) => {
-    const elem = document.getElementById(id);
-    const { fund1, fund2 } = this.state;
-    if (
-      !this.objectIsEmpty(fund1) &&
-      !this.objectIsEmpty(fund2) &&
-      (id !== this.state.fund1.id && id !== this.state.fund2.id)
-    ) {
-      return;
+  componentDidUpdate = (prevProps, prevState) => {
+    // console.log('prevProps: ', prevProps);
+    // console.log('this.props: ', this.props);
+    if (prevProps.funds.length !== this.props.funds.length) {
+      this.setState({ filteredFunds: this.props.funds });
     }
-    elem.checked = !elem.checked;
-    if (id === this.state.fund1.id) {
-      this.setState({ fund1: {} });
-    } else if (id === this.state.fund2.id) {
-      this.setState({ fund2: {} });
+    // console.log('prevState: ', prevState);
+    // console.log('this.state: ', this.state);
+  };
+
+  handleClick = () => {
+    const filters = {
+      min: this.state.min,
+      max: this.state.max
+    };
+    this.props.onFetchCategories(filters);
+  };
+
+  handleChange = (event, minMax) => {
+    let value = event.target.value;
+
+    if (minMax === 0 && value >= 100 && value <= 25000) {
+      this.setState({ min: event.target.value });
     }
-    if (elem.checked && this.objectIsEmpty(fund1)) {
-      this.setState({ fund1: { id: id, key: key } });
-    } else if (elem.checked && this.objectIsEmpty(fund2)) {
-      this.setState({ fund2: { id, key } });
+    if (minMax === 1 && value >= 100 && value <= 25000) {
+      this.setState({ max: event.target.value });
     }
   };
 
   render() {
-    return (
-      <Fragment>
-        {this.props.funds.map(fund => (
+    let list = this.state.filteredFunds.map(fund => {
+      return (
+        <Fragment key={fund.id}>
           <div
             key={fund.id}
             className='card'
-            onClick={() => this.handleClick(fund.id, fund.details_id)}
+            onClick={() => this.props.clicked(fund.id, fund.details_id)}
           >
             <div className='name-and-rating'>
               <b>{fund.name}</b>
@@ -66,6 +72,9 @@ class Card extends Component {
               >
                 {fund.rating}
               </span>
+            </div>
+            <div className='rating'>
+              Risk: <span>{fund.riskometer}</span>
             </div>
             <div className='return'>
               Returns:
@@ -92,26 +101,41 @@ class Card extends Component {
             </div>
             <input id={fund.id} type='checkbox' />
           </div>
-        ))}
-        {!this.objectIsEmpty(this.state.fund1) &&
-        !this.objectIsEmpty(this.state.fund2) ? (
-          <button
-            className='compare-btn'
-            onClick={() => this.compare(this.state.fund1, this.state.fund2)}
-          >
-            Compare 2 Funds
-          </button>
-        ) : null}
+        </Fragment>
+      );
+    });
+
+    return (
+      <Fragment>
+        <SearchBar />
+        <div className='filters'>
+          <input
+            type='text'
+            placeholder='Enter Min Investment (min 100)'
+            onChange={e => this.handleChange(e, 0)}
+          />
+          <input
+            type='text'
+            placeholder='Enter Max Investment (max 25000)'
+            onChange={e => this.handleChange(e, 1)}
+          />
+          <button onClick={() => this.handleClick()}>Filter</button>
+        </div>
+        {list}
       </Fragment>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  funds: state.searchResults.searchResults
+});
+
 const mapDispatchToProps = dispatch => ({
-  onFetchFundDetails: route => dispatch(actions.fetchFundDetails(route))
+  onFetchCategories: filters => dispatch(actions.fetchCategories(filters))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withRouter(Card));

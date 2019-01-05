@@ -13,23 +13,27 @@ const objectIsEmpty = obj => {
 
 class Compare extends Component {
   componentDidMount = () => {
-    const { fund1, fund2 } = this.props.location.state;
-    this.props.onFetchFundDetails(fund1.key, fund2.key);
+    let keys = {};
+    Object.keys(this.props.location.state).map(key => {
+      keys = { ...keys, [key]: this.props.location.state[key].key };
+      return null;
+    });
+    this.props.onFetchFundDetails(keys);
   };
 
   render() {
-    let fund1 = null;
-    let fund2 = null;
-    if (
-      !objectIsEmpty(this.props.searchResults.fund1) &&
-      !objectIsEmpty(this.props.searchResults.fund2)
-    ) {
-      fund1 = this.props.searchResults.fund1;
-      fund2 = this.props.searchResults.fund2;
-    }
+    const { fund1, fund2, fund3, fund4 } = this.props.searchResults;
 
-    return fund1 && fund1.details && fund2 && fund2.details ? (
-      <ComparisonTable fund1={{ ...fund1 }} fund2={{ ...fund2 }} />
+    return !objectIsEmpty(fund1) ||
+      !objectIsEmpty(fund2) ||
+      !objectIsEmpty(fund3) ||
+      !objectIsEmpty(fund4) ? (
+      <ComparisonTable
+        fund1={fund1}
+        fund2={fund2}
+        fund3={fund3}
+        fund4={fund4}
+      />
     ) : (
       <Spinner />
     );
