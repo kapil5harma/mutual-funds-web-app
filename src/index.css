@@ -112,12 +112,15 @@ body {
   font-size: 0.875rem;
 }
 
+.search-and-filters {
+  display: flex;
+  flex-direction: column;
+}
+
 #Search {
   padding: 8px;
   display: flex;
   align-items: center;
-
-  font-family: 'Montserrat';
   font-size: 1.1875rem;
   font-weight: bold;
   font-style: italic;
@@ -128,12 +131,27 @@ body {
 }
 #Search input {
   width: 100%;
-  outline: none;
 }
 
 .filters {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.filters > input {
+  width: 40%;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+button {
+  width: 50%;
+  border-radius: 8px !important;
 }
 
 .filter-btn {
@@ -141,4 +159,12 @@ body {
   border-radius: 4px;
   padding: 0.25rem 1rem;
   background: #fcfcfc;
+}
+
+input,
+button {
+  outline: none !important;
+  border-radius: 4px;
+  border: 0.5px solid burlywood;
+  padding: 0.25rem 0.5rem;
 }

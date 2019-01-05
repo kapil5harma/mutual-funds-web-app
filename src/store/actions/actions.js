@@ -1,8 +1,9 @@
 import * as actionTypes from './actionTypes';
 
-export const fetchCategories = filters => {
+export const fetchCategories = (search, filters) => {
   return {
     type: actionTypes.FETCH_CATEGORIES,
+    search,
     filters
   };
 };

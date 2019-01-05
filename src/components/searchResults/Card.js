@@ -2,48 +2,61 @@ import React, { Component, Fragment } from 'react';
 import * as actions from '../../store/actions/actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import SearchBar from './Search';
 
 class Card extends Component {
   state = {
     filteredFunds: [],
+    searchParameter: '',
     min: -1,
     max: -1
   };
 
   componentDidMount = () => {
+    const search = '';
     const filters = {};
-    if (!this.props.funds.length) this.props.onFetchCategories(filters);
+    if (!this.props.funds.length) this.props.onFetchCategories(search, filters);
     if (this.props.funds.length)
       this.setState({ filteredFunds: this.props.funds });
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    // console.log('prevProps: ', prevProps);
-    // console.log('this.props: ', this.props);
     if (prevProps.funds.length !== this.props.funds.length) {
       this.setState({ filteredFunds: this.props.funds });
     }
-    // console.log('prevState: ', prevState);
-    // console.log('this.state: ', this.state);
   };
 
   handleClick = () => {
+    const search = this.state.searchParameter;
     const filters = {
       min: this.state.min,
       max: this.state.max
     };
-    this.props.onFetchCategories(filters);
+    this.props.onFetchCategories(search, filters);
+  };
+
+  handleSearch = event => {
+    let value = event.target.value;
+    if (value.length === 0) {
+      this.setState({ searchParameter: '' });
+    }
+    if (value.length > 2) {
+      this.setState({ searchParameter: value });
+    }
   };
 
   handleChange = (event, minMax) => {
     let value = event.target.value;
-
+    if (minMax === 0 && value.length === 0) {
+      this.setState({ min: -1 });
+    }
+    if (minMax === 1 && value.length === 0) {
+      this.setState({ max: -1 });
+    }
     if (minMax === 0 && value >= 100 && value <= 25000) {
-      this.setState({ min: event.target.value });
+      this.setState({ min: value });
     }
     if (minMax === 1 && value >= 100 && value <= 25000) {
-      this.setState({ max: event.target.value });
+      this.setState({ max: value });
     }
   };
 
@@ -107,19 +120,31 @@ class Card extends Component {
 
     return (
       <Fragment>
-        <SearchBar />
-        <div className='filters'>
-          <input
-            type='text'
-            placeholder='Enter Min Investment (min 100)'
-            onChange={e => this.handleChange(e, 0)}
-          />
-          <input
-            type='text'
-            placeholder='Enter Max Investment (max 25000)'
-            onChange={e => this.handleChange(e, 1)}
-          />
-          <button onClick={() => this.handleClick()}>Filter</button>
+        <div className='search-and-filters'>
+          <div id='Search'>
+            <input
+              type='text'
+              placeholder='Search MFs'
+              onChange={e => this.handleSearch(e)}
+            />
+          </div>
+          <div className='filters'>
+            <input
+              type='text'
+              placeholder='Enter Min Investment (min 100)'
+              onChange={e => this.handleChange(e, 0)}
+            />
+            <input
+              type='text'
+              placeholder='Enter Max Investment (max 25000)'
+              onChange={e => this.handleChange(e, 1)}
+            />
+          </div>
+          <div className='button-container'>
+            <button onClick={() => this.handleClick()}>
+              Filter and/or Search
+            </button>
+          </div>
         </div>
         {list}
       </Fragment>
@@ -132,7 +157,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onFetchCategories: filters => dispatch(actions.fetchCategories(filters))
+  onFetchCategories: (search, filters) =>
+    dispatch(actions.fetchCategories(search, filters))
 });
 
 export default connect(

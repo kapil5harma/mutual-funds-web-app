@@ -9,15 +9,18 @@ const config = {
 
 export function* fetchCategoriesSaga(action) {
   try {
+    console.log('action: ', action);
     let data = {};
     if (action.filters.min && action.filters.max) {
       data = {
+        search: action.search,
         filters: {
           minimum_investments: action.filters.min,
           maximum_investments: action.filters.max
         }
       };
     }
+    console.log('data: ', data);
     yield put(actions.fetchCategoriesStart());
     let searchParameter = '';
     if (action.searchParameter) searchParameter = action.searchParameter;
